@@ -237,7 +237,6 @@
 </head>
 <body>
 
-    <!-- Pop-up Pembuka -->
     <div class="overlay" id="overlay">
         <div class="overlay-card">
             <h2>Ada pesan nih ✉️</h2>
@@ -246,10 +245,8 @@
         </div>
     </div>
 
-    <!-- Tombol Kontrol Musik -->
     <div class="music-control" id="musicBtn" onclick="toggleMusic()">🎵</div>
 
-    <!-- Elemen Audio -->
     <audio id="bgMusic" loop preload="auto">
         <source src="piano.mp3" type="audio/mpeg">
     </audio>
@@ -269,7 +266,6 @@
             <p>Gak usah protes soal telatnya, doa baik gak ada tanggal kedaluwarsanya bro. <i>Enjoy your 24!</i></p>
         </div>
 
-        <!-- Form Pertanyaan Interaktif -->
         <div class="quiz-section">
             <div class="quiz-title">Isi dulu, gak usah gengsi:</div>
             
@@ -288,8 +284,13 @@
             </div>
 
             <div class="question-group">
-                <label for="q3">3. Karena gua baek, mau gua traktiran kopi engga?</label>
-                <input type="text" id="q3" placeholder="Tapi jangan yang mahal-mahal yaa soalnya pengangguran..." required>
+                <label for="q3">3. Karena gua lagi mode hemat, lu mau disogok pake apa?</label>
+                <select id="q3">
+                    <option value="Es teh kantong plastik aja cukup">Es teh kantong plastik aja cukup 🥤</option>
+                    <option value="Gua aja yang traktir lu, kan gua ultah">Gua aja yang traktir lu, kan gua ultah 🍰</option>
+                    <option value="Seblak pinggir jalan, no debat!">Seblak pinggir jalan, no debat! 🍜</option>
+                    <option value="Udah, ucapan ini aja udah cukup kok">Udah, ucapan ini aja udah cukup kok 🫶</option>
+                </select>
             </div>
 
             <button class="btn-send" onclick="sendToWhatsapp()">Kirim Balasan ke WA Gua 🚀</button>
@@ -343,21 +344,21 @@
         }
 
         function sendToWhatsapp() {
-            const nomorWA = "6285156174283"; // NOMOR LU UDAH AKTIF DI SINI
+            const nomorWA = "6285156174283"; 
 
             const q1 = document.getElementById('q1').value;
             const q2 = document.getElementById('q2').value;
             const q3 = document.getElementById('q3').value;
 
-            if (q2.trim() === "" || q3.trim() === "") {
-                alert("Isi dulu semua kolomnya, jangan dikosongin. 🤔");
+            if (q2.trim() === "") {
+                alert("Wish lu isi dulu dong, masa dikosongin. 🤔");
                 return;
             }
 
             const teksPesan = `Halo, ini balasan dari Dahniar 😎%0A%0A` +
                               `*1. Jujur, seneng kan:*%0A${q1}%0A%0A` +
                               `*2. Wish utama umur 24:*%0A${q2}%0A%0A` +
-                              `*3. Tempat traktiran kopi:*%0A${q3}`;
+                              `*3. Opsi sogokan:*%0A${q3}`;
 
             const urlWA = `https://api.whatsapp.com/send?phone=${nomorWA}&text=${teksPesan}`;
             window.open(urlWA, '_blank');
