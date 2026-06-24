@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Belated 24th Dahniar! ✨</title>
+    <style>
+        :root {
+            --bg-color: #fcf8f2;
+            --primary-color: #d4a373;
+            --text-color: #4a4e69;
+            --accent-color: #e07a5f;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Floating Elements Background */
+        .decorations {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Music Toggle Button */
+        .music-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid var(--primary-color);
+            padding: 10px;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            font-size: 1.2rem;
+            transition: transform 0.2s;
+        }
+
+        .music-control:hover {
+            transform: scale(1.1);
+        }
+
+        /* Main Card */
+        .container {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            padding: 40px 30px;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(212, 163, 115, 0.15);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            border: 1px solid rgba(212, 163, 115, 0.2);
+            animation: fadeIn 1.2s ease-out;
+        }
+
+        .header-img {
+            font-size: 4rem;
+            margin-bottom: 10px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-style: italic;
+            color: var(--primary-color);
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+        }
+
+        .letter {
+            line-height: 1.6;
+            margin-bottom: 30px;
+            font-size: 1rem;
+            text-align: justify;
+        }
+
+        /* Quiz Section */
+        .quiz-section {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid #f1eae0;
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .quiz-title {
+            font-weight: bold;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .question-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        input[type="text"], select {
+            width: 100%;
+            padding: 12px;
+            border: 1.5px solid #d4a373;
+            border-radius: 10px;
+            background-color: #fffdfa;
+            color: var(--text-color);
+            font-size: 0.95rem;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input[type="text"]:focus, select:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 5px rgba(224, 122, 95, 0.3);
+        }
+
+        /* Button */
+        .btn-send {
+            display: inline-block;
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(224, 122, 95, 0.3);
+            transition: transform 0.2s, opacity 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-send:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .heart {
+            position: absolute;
+            color: rgba(224, 122, 95, 0.2);
+            font-size: 20px;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Tombol Kontrol Musik -->
+    <div class="music-control" id="musicBtn" onclick="toggleMusic()">🎵</div>
+
+    <!-- Elemen Audio dengan atribut autoplay bawaan -->
+    <audio id="bgMusic" loop autoplay preload="auto">
+        <source src="piano.mp3/piano.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="decorations" id="decorations"></div>
+
+    <div class="container">
+        <div class="header-img">🤫🎂</div>
+        <h1>Happy Belated 24th, Dahniar!</h1>
+        <div class="subtitle">Nih, sesuai request lu ya...</div>
+        
+        <div class="letter">
+            <p>Katanya minta diucapin, ya udah nih gua bikinin sekalian websitenya biar beda. Sorry kalau telat, yang penting kan ikhlas.</p>
+            <br>
+            <p>Met ulang tahun yang ke-24 ya. Semoga di umur yang makin mateng ini lu makin sukses, urusan kerjaan atau apapun itu dilancarkan, dan pastinya tetep sehat plus waras.</p>
+            <br>
+            <p>Gak usah protes soal telatnya, doa baik gak ada tanggal kedaluwarsanya bro. <i>Enjoy your 24!</i></p>
+        </div>
+
+        <!-- Form Pertanyaan Interaktif -->
+        <div class="quiz-section">
+            <div class="quiz-title">Isi dulu, gak usah gengsi:</div>
+            
+            <!-- Pertanyaan 1 -->
+            <div class="question-group">
+                <label for="q1">1. Jujur, seneng kan dapet ucapan niat gini?</label>
+                <select id="q1">
+                    <option value="Seneng sih, mayan wkwk">Seneng sih, mayan wkwk</option>
+                    <option value="Biasa aja, tapi terharu dikit">Biasa aja, tapi terharu dikit</option>
+                    <option value="Gengsi ah mau ngaku 😜">Gengsi ah mau ngaku 😜</option>
+                </select>
+            </div>
+
+            <!-- Pertanyaan 2 -->
+            <div class="question-group">
+                <label for="q2">2. Apa wish utama lu yang paling penting sekarang?</label>
+                <input type="text" id="q2" placeholder="Tulis satu aja, jangan maruk..." required>
+            </div>
+
+            <!-- Pertanyaan 3 -->
+            <div class="question-group">
+                <label for="q3">3. Karena gua baek, mau dapet traktiran kopi engga nih?</label>
+                <input type="text" id="q3" placeholder="Jangan yang mahal-mahal gua lagi nganggur..." required>
+            </div>
+
+            <button class="btn-send" onclick="sendToWhatsapp()">Kirim Balasan ke WA Gua 🚀</button>
+        </div>
+    </div>
+
+    <script>
+        const audio = document.getElementById('bgMusic');
+        const musicBtn = document.getElementById('musicBtn');
+
+        // Fungsi utama Auto-play paksa saat halaman terbuka
+        function playAudio() {
+            audio.play().then(() => {
+                musicBtn.innerText = "🎵";
+            }).catch(error => {
+                console.log("Autoplay diblokir browser, mengaktifkan opsi interaksi pertama.");
+                // Jika browser memblokir autoplay murni, musik otomatis jalan saat dia geser layar/scroll/klik pertama kali
+                const startPlay = () => {
+                    audio.play();
+                    musicBtn.innerText = "🎵";
+                    window.removeEventListener('click', startPlay);
+                    window.removeEventListener('touchstart', startPlay);
+                    window.removeEventListener('scroll', startPlay);
+                };
+                window.addEventListener('click', startPlay);
+                window.addEventListener('touchstart', startPlay);
+                window.addEventListener('scroll', startPlay);
+            });
+        }
+
+        // Jalankan fungsi setelah semua elemen termuat
+        window.addEventListener('DOMContentLoaded', playAudio);
+
+        function toggleMusic() {
+            if (audio.paused) {
+                audio.play();
+                musicBtn.innerText = "🎵";
+            } else {
+                audio.pause();
+                musicBtn.innerText = "🔇";
+            }
+        }
+
+        // Efek dekorasi jatuh
+        const decorationsContainer = document.getElementById('decorations');
+        const shapes = ['✨', '🍃', '🎈'];
+        
+        for (let i = 0; i < 20; i++) {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerText = shapes[Math.floor(Math.random() * shapes.length)];
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            heart.style.animationDelay = Math.random() * 5 + 's';
+            heart.style.fontSize = Math.random() * 12 + 12 + 'px';
+            decorationsContainer.appendChild(heart);
+        }
+
+        // Fungsi kirim ke WhatsApp
+        function sendToWhatsapp() {
+            // GANTI NOMOR DI BAWAH INI DENGAN NOMOR WA LU (Format: 628xxx)
+            const nomorWA = "628xxxxxxxxxx"; 
+
+            const q1 = document.getElementById('q1').value;
+            const q2 = document.getElementById('q2').value;
+            const q3 = document.getElementById('q3').value;
+
+            if (q2.trim() === "" || q3.trim() === "") {
+                alert("Isi dulu semua kolomnya, jangan dikosongin. 🤔");
+                return;
+            }
+
+            const teksPesan = `Halo, ini balasan dari Dahniar 😎%0A%0A` +
+                              `*1. Jujur, seneng kan:*%0A${q1}%0A%0A` +
+                              `*2. Wish utama umur 24:*%0A${q2}%0A%0A` +
+                              `*3. Tempat traktiran kopi:*%0A${q3}`;
+
+            const urlWA = `https://api.whatsapp.com/send?phone=${nomorWA}&text=${teksPesan}`;
+            window.open(urlWA, '_blank');
+        }
+    </script>
+</body>
+</html>
