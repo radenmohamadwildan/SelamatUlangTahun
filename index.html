@@ -30,6 +30,56 @@
             padding: 20px;
         }
 
+        /* Pop-up Overlay untuk Memaksa Autoplay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fcf8f2;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease;
+        }
+
+        .overlay-card {
+            text-align: center;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(212, 163, 115, 0.15);
+            border: 1px solid rgba(212, 163, 115, 0.2);
+            max-width: 350px;
+            width: 90%;
+        }
+
+        .overlay h2 {
+            color: var(--accent-color);
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+
+        .overlay p {
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+
+        .btn-open {
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(224, 122, 95, 0.3);
+        }
+
         /* Floating Elements Background */
         .decorations {
             position: fixed;
@@ -60,10 +110,6 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
             font-size: 1.2rem;
             transition: transform 0.2s;
-        }
-
-        .music-control:hover {
-            transform: scale(1.1);
         }
 
         /* Main Card */
@@ -147,11 +193,6 @@
             transition: 0.3s;
         }
 
-        input[type="text"]:focus, select:focus {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 5px rgba(224, 122, 95, 0.3);
-        }
-
         /* Button */
         .btn-send {
             display: inline-block;
@@ -169,12 +210,8 @@
             margin-top: 10px;
         }
 
-        .btn-send:hover {
-            transform: translateY(-2px);
-            opacity: 0.9;
-        }
+        .btn-send:hover { transform: translateY(-2px); opacity: 0.9; }
 
-        /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -200,12 +237,21 @@
 </head>
 <body>
 
+    <!-- Pop-up Pembuka -->
+    <div class="overlay" id="overlay">
+        <div class="overlay-card">
+            <h2>Ada pesan nih ✉️</h2>
+            <p>Buat Dahniar dari lu. Klik tombol di bawah buat buka jalurnya.</p>
+            <button class="btn-open" onclick="initWebsite()">Buka Ucapan</button>
+        </div>
+    </div>
+
     <!-- Tombol Kontrol Musik -->
     <div class="music-control" id="musicBtn" onclick="toggleMusic()">🎵</div>
 
-    <!-- Elemen Audio dengan atribut autoplay bawaan -->
-    <audio id="bgMusic" loop autoplay preload="auto">
-        <source src="piano.mp3/piano.mp3" type="audio/mpeg">
+    <!-- Elemen Audio -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="piano.mp3" type="audio/mpeg">
     </audio>
 
     <div class="decorations" id="decorations"></div>
@@ -227,7 +273,6 @@
         <div class="quiz-section">
             <div class="quiz-title">Isi dulu, gak usah gengsi:</div>
             
-            <!-- Pertanyaan 1 -->
             <div class="question-group">
                 <label for="q1">1. Jujur, seneng kan dapet ucapan niat gini?</label>
                 <select id="q1">
@@ -237,16 +282,14 @@
                 </select>
             </div>
 
-            <!-- Pertanyaan 2 -->
             <div class="question-group">
                 <label for="q2">2. Apa wish utama lu yang paling penting sekarang?</label>
                 <input type="text" id="q2" placeholder="Tulis satu aja, jangan maruk..." required>
             </div>
 
-            <!-- Pertanyaan 3 -->
             <div class="question-group">
-                <label for="q3">3. Karena gua baek, mau dapet traktiran kopi engga nih?</label>
-                <input type="text" id="q3" placeholder="Jangan yang mahal-mahal gua lagi nganggur..." required>
+                <label for="q3">3. Karena gua baek, mau dapet traktiran kopi di mana?</label>
+                <input type="text" id="q3" placeholder="Sebut tempatnya, jangan yang mahal-mahal..." required>
             </div>
 
             <button class="btn-send" onclick="sendToWhatsapp()">Kirim Balasan ke WA Gua 🚀</button>
@@ -256,29 +299,22 @@
     <script>
         const audio = document.getElementById('bgMusic');
         const musicBtn = document.getElementById('musicBtn');
+        const overlay = document.getElementById('overlay');
 
-        // Fungsi utama Auto-play paksa saat halaman terbuka
-        function playAudio() {
+        function initWebsite() {
+            overlay.style.opacity = '0';
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 500);
+
             audio.play().then(() => {
                 musicBtn.innerText = "🎵";
-            }).catch(error => {
-                console.log("Autoplay diblokir browser, mengaktifkan opsi interaksi pertama.");
-                // Jika browser memblokir autoplay murni, musik otomatis jalan saat dia geser layar/scroll/klik pertama kali
-                const startPlay = () => {
-                    audio.play();
-                    musicBtn.innerText = "🎵";
-                    window.removeEventListener('click', startPlay);
-                    window.removeEventListener('touchstart', startPlay);
-                    window.removeEventListener('scroll', startPlay);
-                };
-                window.addEventListener('click', startPlay);
-                window.addEventListener('touchstart', startPlay);
-                window.addEventListener('scroll', startPlay);
+            }).catch(err => {
+                console.log("Gagal memutar audio:", err);
             });
-        }
 
-        // Jalankan fungsi setelah semua elemen termuat
-        window.addEventListener('DOMContentLoaded', playAudio);
+            startDecorations();
+        }
 
         function toggleMusic() {
             if (audio.paused) {
@@ -290,25 +326,24 @@
             }
         }
 
-        // Efek dekorasi jatuh
-        const decorationsContainer = document.getElementById('decorations');
-        const shapes = ['✨', '🍃', '🎈'];
-        
-        for (let i = 0; i < 20; i++) {
-            const heart = document.createElement('div');
-            heart.classList.add('heart');
-            heart.innerText = shapes[Math.floor(Math.random() * shapes.length)];
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
-            heart.style.animationDelay = Math.random() * 5 + 's';
-            heart.style.fontSize = Math.random() * 12 + 12 + 'px';
-            decorationsContainer.appendChild(heart);
+        function startDecorations() {
+            const decorationsContainer = document.getElementById('decorations');
+            const shapes = ['✨', '🍃', '🎈'];
+            
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart');
+                heart.innerText = shapes[Math.floor(Math.random() * shapes.length)];
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                heart.style.animationDelay = Math.random() * 5 + 's';
+                heart.style.fontSize = Math.random() * 12 + 12 + 'px';
+                decorationsContainer.appendChild(heart);
+            }
         }
 
-        // Fungsi kirim ke WhatsApp
         function sendToWhatsapp() {
-            // GANTI NOMOR DI BAWAH INI DENGAN NOMOR WA LU (Format: 628xxx)
-            const nomorWA = "628xxxxxxxxxx"; 
+            const nomorWA = "6285156174283"; // NOMOR LU UDAH AKTIF DI SINI
 
             const q1 = document.getElementById('q1').value;
             const q2 = document.getElementById('q2').value;
